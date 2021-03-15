@@ -93,3 +93,57 @@ insert into Employee_Taskforces(taskforce_id,employee_id,role)
     (1,4,"Main IC"),
     (1,3, "Safety Officier"),
     (1,1, "Drill instructor");
+
+-- MySQL Select hands-on
+-- 1 - Find all the offices and display only their city, phone and country
+SELECT city,phone,country FROM offices;
+
+-- 2 - Find all rows in the orders table that mentions FedEx in the comments.
+select * from orders where comments like "%FedEx%"
+
+-- 3 - Display all the orders bought by the customer with the customer number 124, along with the customer name, the contact's first name and contact's last name.
+SELECT orders.*, customers.customerName, customers.contactLastName, customers.contactFirstName
+FROM orders
+JOIN customers
+on orders.customerNumber = customers.customerNumber
+WHERE orders.customerNumber = 124;
+
+-- 4 - Show the contact first name and contact last name of all customers in descending order by the customer's name
+SELECT contactFirstName,
+         contactLastName
+FROM customers
+ORDER BY  customerName desc;
+
+-- 5 - Find all sales rep who are in office code 1, 2 or 3 and their first name or last name contains the substring 'son'
+SELECT *
+FROM employees
+WHERE jobTitle = "Sales Rep"
+        AND (officeCode = 1
+        OR officeCode = 2
+        OR officeCode = 3)
+        AND (firstName LIKE "%son%"
+        OR lastName LIKE "%son%");
+
+-- alternate
+SELECT *
+FROM employees
+WHERE jobTitle = "Sales Rep"
+        AND (officeCode in(1,2,3))
+        AND (firstName LIKE "%son%"
+        OR lastName LIKE "%son%");
+
+-- 6 - Show the name of the product, together with the order details,  
+-- for each order line from the orderdetails table
+SELECT products.productName,
+         orderdetails.*
+FROM orderdetails
+JOIN products
+    ON orderdetails.productCode = products.productCode;
+
+-- 7 - Show how many employees are there for each state in the USA	
+SELECT state,
+         count(*)
+FROM employees
+JOIN offices
+    ON employees.officeCode = offices.officeCode
+GROUP BY  state

@@ -61,3 +61,81 @@ on employees.officeCode = offices.officeCode
 where customers.country = "France" or customers.country = "USA"
 order by customers.customerNumber desc 
 limit 3;
+
+
+-- Show all orders on the dates 
+select * from orders where orderDate = "2003-01-06"
+
+-- Show all the orders made before the date
+select * from orders where orderDate < "2003-07-16"
+
+-- Seperate the year month and day
+select orderNumber, YEAR(orderDate), MONTH(orderDate), DAY(orderDate) from orders;
+
+-- Show all transaction within the year 2003
+select orderNumber, orderDate from orders where year(orderDate) = 2003
+
+-- Show all transaction withiin the year 2003 and in month of feb
+select orderNumber, orderDate from orders where year(orderDate) = 2003 and month(orderDate) = 2
+
+-- See current time in sever
+select now()
+
+-- See current date in sever
+select CURDATE()
+
+-- Find all the orders that are required to ship in 3 days time
+select * from orders where requiredDate - CURDATE() = 3;
+
+
+-- Aggregating (Reducing)
+-- Count all entries in orders
+select count(*) from orders;
+
+-- Adding up all entries from a specific column
+SELECT sum(creditLimit) FROM customers;
+
+-- Show average creditLimit for all customers
+SELECT avg(creditLimit) FROM customers;
+
+-- Show Max 
+SELECT max(creditLimit) FROM customers where country="USA"
+
+-- Show Min
+SELECT min(creditLimit) FROM customers where country="USA"
+
+-- Show country where have customers
+SELECT distinct(country) FROM customers;
+
+-- Show country and calculate average credit limit of each countries'
+SELECT country, avg(creditLimit) FROM customers group by country;
+
+-- Count how many employee are there in each of the office code
+select offices.officeCode, city, count(*) AS "employee_count" from employees
+join offices on employees.officeCode = offices.officeCode
+group by officeCode,city
+
+-- select offices.officeCode, city, count(*) AS "employee_count" from employees
+join offices on employees.officeCode = offices.officeCode
+group by officeCode,city
+
+-- Count how many employee are there in each of the office code where their job title is "Sales Rep"
+select offices.officeCode, city, count(*) AS "employee_count" from employees
+join offices on employees.officeCode = offices.officeCode
+where jobTitle = "Sales Rep"
+group by officeCode,city
+
+-- Count same as above but have more than two
+select offices.officeCode, city, count(*) AS "employee_count" from employees
+join offices on employees.officeCode = offices.officeCode
+where jobTitle = "Sales Rep"
+group by officeCode,city
+having count(*) > 2
+
+-- Count same as above, and make it ascending order
+select offices.officeCode, city, count(*) AS "employee_count" from employees
+join offices on employees.officeCode = offices.officeCode
+where jobTitle = "Sales Rep"
+group by officeCode,city
+having count(*) > 2
+order by count(*)
