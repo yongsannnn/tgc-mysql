@@ -85,3 +85,87 @@ insert into Certificates(title)
 
 -- See the output of the table
 describe Venues;
+
+-- Foreign keys
+-- Must match the parents_id definition, in this case must include "int unsigned"
+-- syntax
+-- foreign key (declared_key) reference table_name(declared_key)
+ 
+create table Students (
+    student_id int unsigned auto_increment primary key,
+    surname varchar(100) not null,
+    given_name varchar(100) not null,
+    date_of_birth date not null,
+    parents_id int unsigned not null, 
+    foreign key(parents_id) references Parents(parents_id)
+) engine=innodb;
+
+-- Insert a student
+insert into Students (surname, given_name, date_of_birth, parents_id)
+values ("Tan", "James", "1990-06-29", 1);
+
+insert into Students (surname, given_name, date_of_birth, parents_id)
+    values ("Leow", "Da Ming", "1997-01-13", 2),
+             ("Leow", "Xiao Ming", "1998-06-22", 2);
+
+-- If parent key inserted does not exist, it will give you an error. 
+insert into Students (surname, given_name, date_of_birth, parents_id)
+    values ("Sue", "Mary", "1990-06-29", 999);
+
+-- ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`swimming`.`Students`, CONSTRAINT `Students_ibfk_1` FOREIGN KEY (`parents_id`) REFERENCES `Parents` (`parents_id`))
+-- Mongo will not have such error message. (Document Base Vs Relational Base)
+
+-- Delete syntax
+delete Parents where parents_id = 1;
+-- This will not work too because system will cause a contradiction. One of the student have parents_id = 1.
+-- In order for this to work we need to delete the student first.
+
+-- Create Sessions table
+create table Sessions (
+    session_id int unsigned auto_increment primary key,
+    session_date datetime not null,
+    venue_id int unsigned not null,
+    foreign key(venue_id) references Venues(venue_id)
+) engine=innodb;
+
+insert into Sessions (session_date, venue_id)
+    values("2020-02-14 12:00:00", 1);
+
+insert into Sessions (session_date, venue_id)
+    values("2020-02-21 22:00:00", 2),
+          ("2020-02-21 21:00:00", 2);
+
+delete Venues where venue_id = 1;
+
+
+-- Create Pivot table
+-- Certificate_Student table
+create table Certificate_Student(
+    certificate_student_id int unsigned auto_increment primary key,
+    student_id int unsigned,
+    certificate_id int unsigned,
+    awarded_date date not null,
+    foreign key (student_id) references Students(student_id),
+    foreign key (certificate_id) references Certificates(certificate_id)
+) engine = innodb;
+
+insert into Certificate_Student(student_id,certificate_id,awarded_date)
+    values(2,1, "2021-02-14");
+
+
+-- To alter a table
+-- syntax
+-- alter table (tableName) (operator) (columnName) (criteria)
+alter table Students add gender varchar(1) not null;
+
+-- To rename a column
+alter table Students rename column surname to last_name;
+alter table Students rename column given_name to first_name;
+
+-- Modify the difinition of a column
+alter table Students modify gender varchar(1);
+
+-- Deleting the entire table
+-- Assuming there is a table called "Fake" 
+drop table Fake;
+
