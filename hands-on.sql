@@ -147,3 +147,40 @@ FROM employees
 JOIN offices
     ON employees.officeCode = offices.officeCode
 GROUP BY  state
+
+
+-- 8 - From the payments table, display the average amount spent by each customer. 
+-- Display the name of the customer as well.
+SELECT customerNumber,
+         avg(amount)
+FROM payments
+GROUP BY  amount;
+
+-- 9 - From the payments table, display the average amount spent by each customer 
+-- but only if the customer has spent a minimum of 10,000 dollars.
+SELECT customerNumber,
+         avg(amount)
+FROM payments
+GROUP BY  amount
+HAVING avg(amount)>10000;
+
+-- 10  - For each product, display how many times it was ordered, 
+-- and display the results with the most orders first and only show the top ten.
+SELECT *,
+        count(*)
+FROM orderdetails
+JOIN products
+    ON orderdetails.productCode = products.productCode
+GROUP BY  productName desc
+limit 10;
+
+-- 11 - Display all orders made between Jan 2003 and Dec 2003
+SELECT * FROM orders where year(orderDate) = 2003;
+
+-- 12 - Display all the number of orders made, per month, between Jan 2003 and 
+-- Dec 2003
+SELECT month(orderDate),
+        count(*)
+FROM orders
+WHERE year(orderDate) = 2003
+GROUP BY  month(orderDate);
