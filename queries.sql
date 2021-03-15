@@ -162,10 +162,36 @@ alter table Students add gender varchar(1) not null;
 alter table Students rename column surname to last_name;
 alter table Students rename column given_name to first_name;
 
--- Modify the difinition of a column
+-- Modify the definition of a column
 alter table Students modify gender varchar(1);
 
 -- Deleting the entire table
 -- Assuming there is a table called "Fake" 
 drop table Fake;
+
+
+-- To create, use `insert`
+-- To delete, use `delete from` and `where` 
+delete from Parents where parents_id = 3;
+
+-- To modify a row, we use `update`
+-- update `Table` set `THINGS YOU WANT TO CHANGE` where `condition`
+update Students set gender = "M" where student_id = 3;
+
+
+-- Add in a foreign key after a table has been created. 
+-- Example, I want to have coach id under the Sessions table
+-- 1. Create Table first
+create table Coaches(
+    coach_id tinyint unsigned auto_increment primary key,
+    `name` varchar(100) not null
+) engine=innodb;
+insert into Coaches(`name`)
+    values ("Steven");
+
+-- 2. Add in new column to the Sessions table
+alter table Sessions add coach_id tinyint unsigned not null;
+
+-- 3. Add in foreign key definition
+alter table Sessions add foreign key(coach_id) references Coaches(coach_id); 
 
