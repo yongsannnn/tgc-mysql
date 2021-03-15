@@ -47,3 +47,41 @@ insert into Parents(surname, given_name, email)
     values("Leow", "Ming Ming","mingmingleow@geemail.com"),
           ("Jonas", "Valentino", "valentinojonas@geemail.com"); 
 
+
+
+-- Create the strong entity first
+-- Venues 
+create table Venues (
+    venue_id int unsigned auto_increment primary key,
+    address varchar(500) not null
+) engine=innodb;
+
+-- Insert ONE address
+insert into Venues (address)
+    values("351 Yishun Ave 3, S769057");
+
+-- Insert MULTIPLE address
+insert into Venues (address)
+    values("95 Hougang Ave 4, S538830"),
+    ("900 Tiong Bahru Road, S158790");
+
+
+-- Certificates
+create table Certificates(
+    certificate_id int unsigned auto_increment primary key,
+    title varchar(200) not null
+) engine=innodb;
+
+-- Insert ONE Certificate
+insert into Certificates(title)
+    values("Singapore Swimming Proficiency Awards Level 1");
+
+-- Insert MULTIPLE Certificates
+insert into Certificates(title)
+    values("Singapore Swimming Proficiency Awards Level 2"),
+    ("Singapore Swimming Proficiency Awards Level 3");
+
+
+
+-- See the output of the table
+describe Venues;
