@@ -214,7 +214,7 @@ async function main() {
                     connection.execute("INSERT INTO film_actor (actor_id, film_id) VALUES (?, ?)", [a, req.params.film_id])
                 }
             }
-            res.send("Film updated")
+            res.redirect("/films")
             connection.commit();
         } catch (e) {
             console.log(e);
