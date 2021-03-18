@@ -141,3 +141,29 @@ where jobTitle = "Sales Rep"
 group by officeCode,city
 having count(*) > 2
 order by count(*)
+
+
+-- SUB QUERY
+-- Using (), it will always go first and return a number or an array
+-- You will need a sub query when you need a variable that needs to be derived. 
+
+-- For each customer, get their average credit limit
+-- but only show the customer whose average credit limit is higher than average credit limit of all the customers
+SELECT customerNumber,
+         creditLimit
+FROM customers
+HAVING AVG(creditLimit) > ????
+-- ???? is the result of another table.
+
+SELECT customerNumber,
+         creditLimit
+FROM customers
+HAVING AVG(creditLimit) > (SELECT AVG(creditLimit) from customers)
+
+
+-- Show the products that has not beed sold before
+SELECT *
+FROM products
+WHERE productCode NOT IN 
+    (SELECT productCode
+    FROM orderdetails)
