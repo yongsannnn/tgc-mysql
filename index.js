@@ -107,6 +107,70 @@ async function main() {
         await connection.execute(query,[req.params.actor_id]);
         res.redirect("/actors");
     })
+
+
+
+    // Film Create
+    app.get("/films/create", async(req,res)=>{
+        let [languages] =  await connection.execute("SELECT * from language");
+
+        res.render("film_create", {
+            "languages": languages
+        })
+    })
+
+    app.post("/films/create", async(req,res) => {
+        let query = `INSERT INTO film(title, description, release_year, original_language_id,
+            language_id, rental_duration, rental_rate, length, replacement_cost) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+            await connection.execute(query, [
+                req.body.title,
+                req.body.description,
+                req.body.release_year,
+                req.body.original_language_id,
+                req.body.language_id,
+                req.body.rental_duration,
+                req.body.rental_rate,
+                req.body.length,
+                req.body.replacement_cost
+            ])
+
+            res.send("Film added")
+     })
+
+     app.get("/films/:film_id/update", async(req,res)=>{
+         // fetch the movie
+         const query = "SELECT * from film WHERE film_id = ?"
+
+         let [films] = await connection.execute(query, [req.params.film_id])
+         let film = films[0]
+
+         // fetch all the languages
+        let [languages] =  await connection.execute("SELECT * from language");
+
+         res.render("film_update", {
+             "film": film,
+             "languages": languages
+         })
+     })
+
+     app.post("/films/:film_id/update", async(req,res)=>{
+        let query = `UPDATE film SET title=?, description=?, release_year=?, original_language_id=?,
+            language_id=?, rental_duration=?, rental_rate=?, length=?, replacement_cost=? WHERE film_id=?`;
+        await connection.execute(query, [
+                req.body.title,
+                req.body.description,
+                req.body.release_year,
+                req.body.original_language_id,
+                req.body.language_id,
+                req.body.rental_duration,
+                req.body.rental_rate,
+                req.body.length,
+                req.body.replacement_cost,
+                req.params.film_id
+            ])
+            res.send("Film updated")
+     })
 }
 
 main();

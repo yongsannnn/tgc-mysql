@@ -1,0 +1,56 @@
+{{#extends "base"}}
+{{#block "content"}}
+
+<h1>Add New Film</h1>
+
+<form method = "POST">
+<div>
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control" name="title"/>
+</div>
+<div>
+    <label class="form-label">Description</label>
+    <input type="text" class="form-control" name="description"/>
+</div>
+<div>
+    <label class="form-label">Release Year</label>
+    <input type="text" class="form-control" name="release_year"/>
+</div>
+<div>
+    <label class="form-label">Original Language</label>
+    <select class="form-control" name="original_language_id">
+        {{#each languages}}
+        <option value="{{this.language_id}}">{{this.name}}</option>
+        {{/each}}
+    </select> 
+</div>
+<div>
+    <label class="form-label">Language</label>
+    <select class="form-control" name="language_id">
+        {{#each languages}}
+        <option value="{{this.language_id}}">{{this.name}}</option>
+        {{/each}}
+    </select> 
+</div>
+<div>
+    <label class="form-label">Rental Duration</label>
+    <input type="text" class="form-control" name="rental_duration"/>
+</div>
+<div>
+    <label class="form-label">Rental Rate</label>
+    <input type="text" class="form-control" name="rental_rate"/>
+</div>
+<div>
+    <label class="form-label">Length</label>
+    <input type="text" class="form-control" name="length"/>
+</div>
+<div>
+    <label class="form-label">Replacement Cost</label>
+    <input type="text" class="form-control" name="replacement_cost"/>
+</div>
+    <input type="submit" value="Add Film" class="btn btn-primary mt-2"></input>
+
+</form>
+
+{{/block}}
+{{/extends}}
