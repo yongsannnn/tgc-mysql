@@ -43,6 +43,31 @@ async function main() {
             "actors": actors
         })
     })
+
+    app.get("/actors/create", async (req,res)=>{
+
+        res.render("actor_create");
+    })
+
+    app.post("/actors/create", async (req,res)=>{
+        let {first_name, last_name}= req.body;
+        // instead of
+        // let first_name = req.body.first_name
+        // let last_name = req.body.last_name
+
+        // WRONG METHOD, using TEMPLATE LITERALS are vulnerable to SQL Injection
+        // let query = `insert into actor (first_name,last_name) VALUES ("${first_name}","${last_name}" )`
+        
+        // Use PREPARED STATEMENTS to insert
+        // SQL will take it as literal data, it will not run it as a CODE
+        // If the person insert in SQL code, it will still take it literally
+        let query = `insert into actor (first_name,last_name) VALUES (?,?)`
+        await connection.execute(query,[first_name, last_name]);
+        
+        await connection.execute(query)
+
+        res.redirect("/actors")
+    })
 }
 
 main();
