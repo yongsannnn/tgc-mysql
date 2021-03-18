@@ -22,6 +22,8 @@ select * from employees where officeCode = 1 or officeCode = 4;
 
 -- Find all employees not from office code 1 or 4
 select * from employees where officeCode != 1 and officeCode != 4;
+--Can use the NOT IN to exclude or IN to include
+select * from employees where officeCode not in (1,4);
 
 -- Find all employees from office code 4 and all sales rep from office code 1
 select * from employees where officeCode = 4 or officeCode = 1 and jobTitle = "Sales Rep"
